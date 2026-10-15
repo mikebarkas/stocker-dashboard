@@ -52,7 +52,7 @@ Then set the role passwords in the same `psql` session. `\password` hashes the p
 \password stocker_reader
 ```
 
-Store the passwords somewhere safe, like a password manager. (not in a repo 🤪) 
+Store the passwords somewhere safe, like a password manager. (not in a repo 🤪)
 
 ### Lock down the Data API
 
