@@ -50,7 +50,8 @@ jobs:
         working-directory: sync
     steps:
       - uses: actions/checkout@v7
-      - uses: astral-sh/setup-uv@v10
+      # setup-uv publishes full version tags only; there is no moving v10 tag.
+      - uses: astral-sh/setup-uv@v10.3.0
         with:
           enable-cache: true
           cache-dependency-glob: sync/uv.lock
