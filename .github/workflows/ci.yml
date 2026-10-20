@@ -42,3 +42,22 @@ jobs:
       - run: npm run typecheck -w ${{ matrix.workspace }}
       - run: npm run test -w ${{ matrix.workspace }}
       - run: npm run build -w ${{ matrix.workspace }}
+
+  sync:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sync
+    steps:
+      - uses: actions/checkout@v7
+      # setup-uv publishes full version tags only; there is no moving v10 tag.
+      - uses: astral-sh/setup-uv@v10.3.0
+        with:
+          enable-cache: true
+          cache-dependency-glob: sync/uv.lock
+      - run: uv sync --locked
+      - run: uv run ruff check
+      - run: uv run ruff format --check
+      - run: uv run pytest
+      # Catch Containerfile breakage before a release tag, not after.
+      - run: docker build -f Containerfile .

@@ -14,6 +14,8 @@ __pycache__/
 .env
 .env.*
 !.env.example
+# Certificates (e.g. Supabase CA): public, but mounted at runtime, not committed
+*.crt
 
 # OS / editor
 .DS_Store
