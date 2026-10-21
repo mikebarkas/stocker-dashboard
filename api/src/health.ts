@@ -1,6 +1,6 @@
 // GET /health: is the API able to answer queries? Checks the database with a
 // trivial query. Yoga's built-in liveness check ("is the process up?", no
-// database) is moved to /live in index.ts.
+// database) is moved to /live in app.ts.
 import type pg from "pg";
 import { useReadinessCheck } from "graphql-yoga";
 
