@@ -1,0 +1,43 @@
+"""
+One price sample for a symbol.
+"""
+type Quote {
+  symbol: String!
+  "Price in USD."
+  price: Float!
+  "Change from the previous close, in USD."
+  change: Float!
+  "When the quote was taken: ISO 8601, UTC (e.g. 2026-10-21T19:40:00.000Z)."
+  timestamp: String!
+}
+
+"""
+All-time statistics for one symbol.
+"""
+type SymbolSummary {
+  symbol: String!
+  "The most recent quote."
+  latest: Quote
+  "Lowest price ever recorded."
+  low: Float
+  "Highest price ever recorded."
+  high: Float
+  "Number of quotes recorded."
+  samples: Int!
+}
+
+type Query {
+  "Every symbol that has quotes, A to Z."
+  symbols: [String!]!
+
+  """
+  The most recent quotes for a symbol, returned oldest first.
+  `from` and `to` are YYYY-MM-DD (UTC) or ISO 8601 with a time zone; both are inclusive.
+  `limit` is 1 to 1000.
+  An unknown symbol returns an empty list.
+  """
+  quotes(symbol: String!, from: String, to: String, limit: Int = 200): [Quote!]!
+
+  "All-time statistics for a symbol, or null if the symbol has no quotes."
+  summary(symbol: String!): SymbolSummary
+}
