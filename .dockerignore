@@ -1,0 +1,27 @@
+# Build context for api/Containerfile (built from the repo root).
+# Only what the image needs; everything else stays out, especially secrets.
+
+# Dependencies and build output: the image installs and builds its own.
+**/node_modules
+**/dist
+**/coverage
+
+# Secrets and certificates: mounted or injected at runtime, never baked in.
+**/.env
+**/.env.*
+!**/.env.example
+**/*.crt
+
+# Not needed for the API image.
+.git
+.github
+.claude
+**/.DS_Store
+db
+sync
+api/test
+**/*.test.ts
+# web: only its package.json, because npm checks every workspace's
+# manifest against the root package-lock.json.
+web/*
+!web/package.json

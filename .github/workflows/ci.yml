@@ -56,6 +56,8 @@ jobs:
       - run: npm run typecheck -w api
       - run: npm run test -w api
       - run: npm run build -w api
+      # Catch Containerfile breakage before a release tag, not after.
+      - run: docker build -f api/Containerfile .
 
   web:
     runs-on: ubuntu-latest

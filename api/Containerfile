@@ -1,0 +1,41 @@
+# API image. Build from the repo root (npm workspaces share one lockfile):
+#   docker build -f api/Containerfile -t stocker-api .
+
+# Build stage: all dependencies, compile TypeScript to dist/.
+FROM node:24-slim AS build
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY api/package.json api/
+COPY web/package.json web/
+RUN npm ci --workspace api --ignore-scripts
+COPY tsconfig.base.json ./
+COPY api/ api/
+# Also copies src/schema.graphql into dist/ (the server reads it at startup).
+RUN npm run build --workspace api
+
+# Runtime stage: production dependencies and compiled code only.
+FROM node:24-slim
+ENV NODE_ENV=production \
+    PORT=4000
+WORKDIR /app
+COPY package.json package-lock.json ./
+COPY api/package.json api/
+COPY web/package.json web/
+# --ignore-scripts: no package install scripts run in the image.
+RUN npm ci --workspace api --omit=dev --ignore-scripts \
+    && npm cache clean --force
+COPY --from=build /app/api/dist api/dist
+
+WORKDIR /app/api
+# The node image's built-in user, by number so runAsNonRoot can verify it.
+USER 1000:1000
+EXPOSE 4000
+
+# Liveness only (/live): a database outage should not mark the container
+# unhealthy. /health (with the database check) is for external monitoring.
+HEALTHCHECK --interval=30s --timeout=3s --start-period=10s --retries=3 \
+  CMD ["node", "-e", "fetch('http://localhost:'+process.env.PORT+'/live').then(r=>process.exit(r.ok?0:1),()=>process.exit(1))"]
+
+# Exec form: node is PID 1 and gets SIGTERM directly (npm start would not
+# pass it on reliably), so the server can finish requests and close the pool.
+CMD ["node", "dist/index.js"]
