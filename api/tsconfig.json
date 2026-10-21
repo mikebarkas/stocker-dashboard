@@ -6,8 +6,8 @@
     "types": ["node"],
     "rewriteRelativeImportExtensions": true,
     "erasableSyntaxOnly": true,
-    "rootDir": "src",
-    "outDir": "dist"
+    "noEmit": true
   },
-  "include": ["src"]
+  // Type-check (and lint) everything; tsconfig.build.json compiles src only.
+  "include": ["src", "test", "vitest.config.ts", "codegen.ts"]
 }

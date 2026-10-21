@@ -1,0 +1,20 @@
+# Development services.
+#   docker compose up -d     start (the API tests need this)
+#   docker compose down      stop and throw the data away
+services:
+  # Throwaway Postgres for the API tests. The tests apply the real migration
+  # and a fixture on every run, so it starts empty and keeps nothing.
+  postgres-test:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_PASSWORD: postgres
+    ports:
+      # Localhost only; 54329 avoids clashing with a local Postgres on 5432.
+      - "127.0.0.1:54329:5432"
+    # Data in memory: fast, and gone on stop.
+    tmpfs: /var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD", "pg_isready", "-U", "postgres"]
+      interval: 2s
+      timeout: 3s
+      retries: 15

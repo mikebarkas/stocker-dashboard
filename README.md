@@ -36,14 +36,16 @@ Supabase is used only as a managed Postgres. The GraphQL API is written here; Su
 
 ## Development
 
-Requires Node 24 (see `.nvmrc`).
+Requires Node 24 (see `.nvmrc`) and Docker (for the API tests' database).
 
 ```sh
 npm install
+docker compose up -d     # throwaway Postgres for the API tests (compose.yaml)
 npm run lint
 npm run typecheck
-npm test
+npm test                 # API tests run against that database
 npm run build
+docker compose down      # stop it; the data is thrown away
 ```
 
 ## Status

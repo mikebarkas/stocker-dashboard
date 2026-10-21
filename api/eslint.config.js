@@ -17,7 +17,7 @@ export default defineConfig(
     },
   },
   {
-    files: ["eslint.config.js", "codegen.ts"],
+    files: ["eslint.config.js"],
     extends: [tseslint.configs.disableTypeChecked],
   },
 );
