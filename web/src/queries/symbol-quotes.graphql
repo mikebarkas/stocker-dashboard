@@ -1,0 +1,8 @@
+# Detail page chart: quotes since $from (or the most recent $limit when
+# $from is null), oldest first.
+query SymbolQuotes($symbol: String!, $from: String, $limit: Int) {
+  quotes(symbol: $symbol, from: $from, limit: $limit) {
+    price
+    timestamp
+  }
+}

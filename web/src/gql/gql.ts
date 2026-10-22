@@ -14,12 +14,14 @@ import type { TypedDocumentNode as DocumentNode } from '@graphql-typed-document-
  * Learn more about it here: https://the-guild.dev/graphql/codegen/plugins/presets/preset-client#reducing-bundle-size
  */
 type Documents = {
+    "query LatestQuotes {\n  latestQuotes {\n    symbol\n    price\n    change\n    timestamp\n  }\n}": typeof types.LatestQuotesDocument,
     "query SymbolDetail($symbol: String!) {\n  summary(symbol: $symbol) {\n    symbol\n    samples\n    low\n    high\n    latest {\n      price\n      change\n      timestamp\n    }\n  }\n}": typeof types.SymbolDetailDocument,
-    "query Symbols {\n  symbols\n}": typeof types.SymbolsDocument,
+    "query SymbolQuotes($symbol: String!, $from: String, $limit: Int) {\n  quotes(symbol: $symbol, from: $from, limit: $limit) {\n    price\n    timestamp\n  }\n}": typeof types.SymbolQuotesDocument,
 };
 const documents: Documents = {
+    "query LatestQuotes {\n  latestQuotes {\n    symbol\n    price\n    change\n    timestamp\n  }\n}": types.LatestQuotesDocument,
     "query SymbolDetail($symbol: String!) {\n  summary(symbol: $symbol) {\n    symbol\n    samples\n    low\n    high\n    latest {\n      price\n      change\n      timestamp\n    }\n  }\n}": types.SymbolDetailDocument,
-    "query Symbols {\n  symbols\n}": types.SymbolsDocument,
+    "query SymbolQuotes($symbol: String!, $from: String, $limit: Int) {\n  quotes(symbol: $symbol, from: $from, limit: $limit) {\n    price\n    timestamp\n  }\n}": types.SymbolQuotesDocument,
 };
 
 /**
@@ -39,11 +41,15 @@ export function graphql(source: string): unknown;
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
+export function graphql(source: "query LatestQuotes {\n  latestQuotes {\n    symbol\n    price\n    change\n    timestamp\n  }\n}"): (typeof documents)["query LatestQuotes {\n  latestQuotes {\n    symbol\n    price\n    change\n    timestamp\n  }\n}"];
+/**
+ * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
+ */
 export function graphql(source: "query SymbolDetail($symbol: String!) {\n  summary(symbol: $symbol) {\n    symbol\n    samples\n    low\n    high\n    latest {\n      price\n      change\n      timestamp\n    }\n  }\n}"): (typeof documents)["query SymbolDetail($symbol: String!) {\n  summary(symbol: $symbol) {\n    symbol\n    samples\n    low\n    high\n    latest {\n      price\n      change\n      timestamp\n    }\n  }\n}"];
 /**
  * The graphql function is used to parse GraphQL queries into a document that can be used by GraphQL clients.
  */
-export function graphql(source: "query Symbols {\n  symbols\n}"): (typeof documents)["query Symbols {\n  symbols\n}"];
+export function graphql(source: "query SymbolQuotes($symbol: String!, $from: String, $limit: Int) {\n  quotes(symbol: $symbol, from: $from, limit: $limit) {\n    price\n    timestamp\n  }\n}"): (typeof documents)["query SymbolQuotes($symbol: String!, $from: String, $limit: Int) {\n  quotes(symbol: $symbol, from: $from, limit: $limit) {\n    price\n    timestamp\n  }\n}"];
 
 export function graphql(source: string) {
   return (documents as any)[source] ?? {};

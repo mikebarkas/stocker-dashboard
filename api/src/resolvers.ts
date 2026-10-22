@@ -28,6 +28,14 @@ const QUOTES_SQL = `
   order by ts
 `;
 
+// One row per symbol: DISTINCT ON keeps the first row of each symbol in the
+// ORDER BY, i.e. the newest. Walks the (symbol, ts) primary key index.
+const LATEST_QUOTES_SQL = `
+  select distinct on (symbol) symbol, price, change, ts
+  from stocker.quotes
+  order by symbol, ts desc
+`;
+
 const STATS_SQL = `
   select count(*)::int as samples, min(price) as low, max(price) as high
   from stocker.quotes
@@ -53,6 +61,11 @@ export const resolvers: Resolvers = {
     symbols: async (_parent, _args, { pool }) => {
       const result = await pool.query<{ symbol: string }>(SYMBOLS_SQL);
       return result.rows.map((row) => row.symbol);
+    },
+
+    latestQuotes: async (_parent, _args, { pool }) => {
+      const result = await pool.query<QuoteRow>(LATEST_QUOTES_SQL);
+      return result.rows.map(toQuote);
     },
 
     quotes: async (_parent, args, { pool }) => {

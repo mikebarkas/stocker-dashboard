@@ -1,4 +1,0 @@
-# Home page: every symbol that has quotes.
-query Symbols {
-  symbols
-}
