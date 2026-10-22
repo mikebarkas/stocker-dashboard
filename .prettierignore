@@ -3,3 +3,4 @@ dist/
 coverage/
 CLAUDE.local.md
 api/src/generated/
+web/src/gql/
