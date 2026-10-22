@@ -24,4 +24,10 @@ export default defineConfig(
     files: ["eslint.config.js"],
     extends: [tseslint.configs.disableTypeChecked],
   },
+  {
+    // Test code is never hot-reloaded, so it may export helpers and
+    // components from the same file.
+    files: ["src/test/**", "src/**/*.test.{ts,tsx}"],
+    rules: { "react-refresh/only-export-components": "off" },
+  },
 );
