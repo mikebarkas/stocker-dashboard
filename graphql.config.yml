@@ -1,0 +1,4 @@
+# For editor tooling (VS Code "GraphQL: Language Feature Support"):
+# autocomplete and schema errors in the web app's .graphql query files.
+schema: api/src/schema.graphql
+documents: web/src/**/*.graphql

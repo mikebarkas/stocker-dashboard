@@ -1,0 +1,15 @@
+# Detail page. $symbol is a variable: the value is sent separately from the
+# query text, like a parameter in a prepared SQL statement.
+query SymbolDetail($symbol: String!) {
+  summary(symbol: $symbol) {
+    symbol
+    samples
+    low
+    high
+    latest {
+      price
+      change
+      timestamp
+    }
+  }
+}

@@ -68,6 +68,12 @@ jobs:
           node-version-file: .nvmrc
           cache: npm
       - run: npm ci
+      # The generated query types are committed; fail if they are stale
+      # (a changed .graphql file or a changed API schema).
+      - name: Check generated types are up to date
+        run: |
+          npm run codegen -w web
+          git diff --exit-code web/src/gql
       - run: npm run lint -w web
       - run: npm run typecheck -w web
       - run: npm run test -w web
