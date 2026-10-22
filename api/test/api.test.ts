@@ -68,6 +68,38 @@ describe("symbols", () => {
   });
 });
 
+describe("latestQuotes", () => {
+  it("returns the newest quote for each symbol, A to Z", async () => {
+    const result = await gql<{ latestQuotes: QuoteFields[] }>(
+      "{ latestQuotes { symbol price change timestamp } }",
+    );
+    expect(result).toEqual({
+      data: {
+        latestQuotes: [
+          {
+            symbol: "BRK.B",
+            price: 480.1,
+            change: 0.4,
+            timestamp: "2026-10-21T15:00:00.000Z",
+          },
+          {
+            symbol: "MSFT",
+            price: 402.75,
+            change: -8.5,
+            timestamp: "2026-10-21T20:00:00.000Z",
+          },
+          {
+            symbol: "NVDA",
+            price: 179.25,
+            change: 0.25,
+            timestamp: "2026-10-20T16:00:00.000Z",
+          },
+        ],
+      },
+    });
+  });
+});
+
 describe("quotes", () => {
   it("returns quotes oldest first with schema types", async () => {
     const result = await quotes({ symbol: "NVDA" });

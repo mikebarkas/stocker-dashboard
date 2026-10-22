@@ -14,6 +14,8 @@ export type Scalars = {
 
 export type Query = {
   __typename?: 'Query';
+  /** The most recent quote for each symbol, A to Z. One request for a list page. */
+  latestQuotes: Array<Quote>;
   /**
    * The most recent quotes for a symbol, returned oldest first.
    * `from` and `to` are YYYY-MM-DD (UTC) or ISO 8601 with a time zone; both are inclusive.
@@ -160,6 +162,7 @@ export type ResolversParentTypes = {
 };
 
 export type QueryResolvers<ContextType = Context, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
+  latestQuotes?: Resolver<Array<ResolversTypes['Quote']>, ParentType, ContextType>;
   quotes?: Resolver<Array<ResolversTypes['Quote']>, ParentType, ContextType, RequireFields<QueryQuotesArgs, 'limit' | 'symbol'>>;
   summary?: Resolver<Maybe<ResolversTypes['SymbolSummary']>, ParentType, ContextType, RequireFields<QuerySummaryArgs, 'symbol'>>;
   symbols?: Resolver<Array<ResolversTypes['String']>, ParentType, ContextType>;

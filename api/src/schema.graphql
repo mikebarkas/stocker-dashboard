@@ -30,6 +30,9 @@ type Query {
   "Every symbol that has quotes, A to Z."
   symbols: [String!]!
 
+  "The most recent quote for each symbol, A to Z. One request for a list page."
+  latestQuotes: [Quote!]!
+
   """
   The most recent quotes for a symbol, returned oldest first.
   `from` and `to` are YYYY-MM-DD (UTC) or ISO 8601 with a time zone; both are inclusive.
