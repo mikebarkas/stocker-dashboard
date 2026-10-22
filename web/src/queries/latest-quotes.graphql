@@ -1,0 +1,9 @@
+# Home page: the newest quote for each symbol, in one request.
+query LatestQuotes {
+  latestQuotes {
+    symbol
+    price
+    change
+    timestamp
+  }
+}
